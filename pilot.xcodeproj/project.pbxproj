@@ -16,6 +16,8 @@
 		A436575A1CD21F3800C20185 /* ImportSDKDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A43657591CD21F3800C20185 /* ImportSDKDemoTests.m */; };
 		A43657671CD21FA600C20185 /* DJISDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A43657651CD21F6200C20185 /* DJISDK.framework */; };
 		A43657681CD21FA600C20185 /* DJISDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A43657651CD21F6200C20185 /* DJISDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C46DB3E91DB171EA009EA949 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C46DB3E81DB171EA009EA949 /* RootViewController.m */; };
+		C46DB3EC1DB172C7009EA949 /* DemoUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = C46DB3EB1DB172C7009EA949 /* DemoUtility.m */; };
 		D5B603F81DB1613400F17B54 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B603F71DB1613400F17B54 /* CoreVideo.framework */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +60,10 @@
 		A43657591CD21F3800C20185 /* ImportSDKDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImportSDKDemoTests.m; sourceTree = "<group>"; };
 		A436575B1CD21F3800C20185 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A43657651CD21F6200C20185 /* DJISDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DJISDK.framework; sourceTree = "<group>"; };
+		C46DB3E71DB171EA009EA949 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		C46DB3E81DB171EA009EA949 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		C46DB3EA1DB172C7009EA949 /* DemoUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoUtility.h; sourceTree = "<group>"; };
+		C46DB3EB1DB172C7009EA949 /* DemoUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoUtility.m; sourceTree = "<group>"; };
 		D5B603F71DB1613400F17B54 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -103,6 +109,10 @@
 		A436573E1CD21F3800C20185 /* ImportSDKDemo */ = {
 			isa = PBXGroup;
 			children = (
+				C46DB3EA1DB172C7009EA949 /* DemoUtility.h */,
+				C46DB3EB1DB172C7009EA949 /* DemoUtility.m */,
+				C46DB3E71DB171EA009EA949 /* RootViewController.h */,
+				C46DB3E81DB171EA009EA949 /* RootViewController.m */,
 				A43657421CD21F3800C20185 /* AppDelegate.h */,
 				A43657431CD21F3800C20185 /* AppDelegate.m */,
 				A43657451CD21F3800C20185 /* ViewController.h */,
@@ -193,7 +203,7 @@
 				TargetAttributes = {
 					A436573B1CD21F3800C20185 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 9EMM8AZPKW;
+						DevelopmentTeam = 2KU9DLED5P;
 					};
 					A43657541CD21F3800C20185 = {
 						CreatedOnToolsVersion = 7.2;
@@ -246,7 +256,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A43657471CD21F3800C20185 /* ViewController.m in Sources */,
+				C46DB3EC1DB172C7009EA949 /* DemoUtility.m in Sources */,
 				A43657441CD21F3800C20185 /* AppDelegate.m in Sources */,
+				C46DB3E91DB171EA009EA949 /* RootViewController.m in Sources */,
 				A43657411CD21F3800C20185 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -375,7 +387,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9EMM8AZPKW;
+				DEVELOPMENT_TEAM = 2KU9DLED5P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -392,7 +404,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9EMM8AZPKW;
+				DEVELOPMENT_TEAM = 2KU9DLED5P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
