@@ -26,7 +26,7 @@
 {
     [super viewDidAppear:animated];
     
-    NSString* appKey = @"b634fbc68a968a880a969786"; //TODO: Please enter your App Key here
+    NSString* appKey = @"b634fbc68a968a880a969786"; 
     
     if ([appKey length] == 0) {
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];

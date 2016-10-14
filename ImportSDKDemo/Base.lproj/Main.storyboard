@@ -91,6 +91,9 @@
                                 <state key="normal" title="up">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="onUpButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KMm-s2-7T2"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uVi-fK-gbg">
                                 <color key="backgroundColor" red="0.73725490199999999" green="0.73725490199999999" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -99,6 +102,9 @@
                                 </constraints>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="down"/>
+                                <connections>
+                                    <action selector="onDownButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GbE-on-OTg"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cdj-iN-5WZ">
                                 <color key="backgroundColor" red="0.23529411759999999" green="0.65098039220000004" blue="0.99607843139999996" alpha="1" colorSpace="calibratedRGB"/>
@@ -140,7 +146,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="downButton" destination="uVi-fK-gbg" id="jUd-Cv-haW"/>
                         <outlet property="fpvView" destination="CPH-J4-1O2" id="KjB-31-ZeD"/>
+                        <outlet property="leftButton" destination="Cdj-iN-5WZ" id="ybk-gg-JHu"/>
+                        <outlet property="rightButton" destination="yxW-gq-v36" id="WoA-cu-xhe"/>
+                        <outlet property="upButton" destination="t06-Io-bwx" id="8JX-Ei-hTu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
