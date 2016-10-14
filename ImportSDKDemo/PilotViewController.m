@@ -6,16 +6,16 @@
 //  Copyright © 2016 UP. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "PilotViewController.h"
 #import <DJISDK/DJISDK.h>
 
 
 
-@interface ViewController ()
+@interface PilotViewController ()
 
 @end
 
-@implementation ViewController
+@implementation PilotViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
