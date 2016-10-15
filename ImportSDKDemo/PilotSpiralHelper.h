@@ -15,7 +15,7 @@ typedef void (^directionBlock)(PilotSpiralHelper *cls, double horizontal, double
 
 @property (nonatomic, strong) directionBlock callBlock;
 
-- (void)setCallBlock:(directionBlock)callBlock;
+- (void)setBlock:(directionBlock)callBlock;
 - (void)startPilotSpiralUpdateResult;
 
 @end

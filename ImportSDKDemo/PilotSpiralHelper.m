@@ -17,7 +17,7 @@
 
 @implementation PilotSpiralHelper
 
-- (void)setCallBlock:(directionBlock)callBlock {
+- (void)setBlock:(directionBlock)callBlock {
     self.callBlock = callBlock;
 }
 

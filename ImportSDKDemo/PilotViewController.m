@@ -9,6 +9,7 @@
 #import "PilotViewController.h"
 #import "DemoUtility.h"
 #import "DemoComponentHelper.h"
+#import "PilotSpiralHelper.h"
 #import <DJISDK/DJISDK.h>
 #import <VideoPreviewer/VideoPreviewer.h>
 
@@ -30,7 +31,7 @@
 
 @property(atomic) float rotationAngleVelocity;
 @property(atomic) DJIGimbalRotateDirection rotationDirection;
-
+@property (strong, nonatomic) PilotSpiralHelper *pilotSpiralHelper;
 
 @property(nonatomic, assign) BOOL needToSetMode;
 
@@ -52,6 +53,22 @@
     
     [[VideoPreviewer instance] start];
     [[VideoPreviewer instance] setDecoderWithProduct:[DemoComponentHelper fetchProduct] andDecoderType:VideoPreviewerDecoderTypeSoftwareDecoder];
+    
+    self.pilotSpiralHelper = [[PilotSpiralHelper alloc] init];
+    __weak typeof(self) weakSelf = self;
+    [self.pilotSpiralHelper setBlock:^(PilotSpiralHelper *cls, double horizontal, double vertical) {
+        NSLog(@"%lf %lf", horizontal, vertical);
+        if (vertical > 0) {
+            weakSelf.rotationAngleVelocity = vertical * 40;
+            weakSelf.rotationDirection = DJIGimbalRotateDirectionClockwise;
+            [weakSelf onUpdateGimbalSpeedTick:nil];
+        } else {
+            weakSelf.rotationAngleVelocity = -vertical * 40;
+            weakSelf.rotationDirection = DJIGimbalRotateDirectionCounterClockwise;
+            [weakSelf onUpdateGimbalSpeedTick:nil];
+        }
+    }];
+    [self.pilotSpiralHelper startPilotSpiralUpdateResult];
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -80,6 +97,8 @@
         [self.gimbalSpeedTimer invalidate];
         self.gimbalSpeedTimer = nil;
     }
+    
+    
 }
 
 
@@ -186,8 +205,7 @@
     [self onUpdateGimbalSpeedTick:nil];
 }
 
-- (void)
-resetRotation {
+- (void)resetRotation {
     self.rotationAngleVelocity = 0.0;
     self.rotationDirection = DJIGimbalRotateDirectionClockwise;
 }

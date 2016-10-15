@@ -8,6 +8,7 @@
 #import "RootViewController.h"
 #import <DJISDK/DJISDK.h>
 #import "DemoUtility.h"
+#import "PilotSpiralHelper.h"
 
 @interface RootViewController ()<DJISDKManagerDelegate>
 
@@ -17,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *connectButton;
 
 - (IBAction)onConnectButtonClicked:(id)sender;
+
+@property (strong, nonatomic) PilotSpiralHelper *pilotSpiralHelper;
 
 @end
 
