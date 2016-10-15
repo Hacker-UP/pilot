@@ -70,15 +70,25 @@
     
     self.pilotSpiralHelper = [[PilotSpiralHelper alloc] init];
     __weak typeof(self) weakSelf = self;
+    DJIGimbal* gimbal = [DemoComponentHelper fetchGimbal];
+    NSInteger min = [[gimbal getParamMin:DJIGimbalParamAdjustYaw] integerValue];
+    NSInteger max = [[gimbal getParamMax:DJIGimbalParamAdjustYaw] integerValue];
+    
     [self.pilotSpiralHelper setBlock:^(PilotSpiralHelper *cls, double horizontal, double vertical) {
         if (horizontal > 0) {
-            weakSelf.currentYaw += horizontal * 40;
-            [weakSelf rotate:weakSelf.currentYaw];
+            _yawRotation.direction = DJIGimbalRotateDirectionCounterClockwise;
+            if (_yawRotation.angle - horizontal * 40 >= min && _yawRotation.angle - horizontal * 40 <= max) {
+                _yawRotation.angle -= horizontal * 40;
+            }
+            [weakSelf rotateRight];
         } else {
-            weakSelf.currentYaw -= (-horizontal) * 40;
-            [weakSelf rotate:weakSelf.currentYaw];
+            _yawRotation.direction = DJIGimbalRotateDirectionCounterClockwise;
+            if (_yawRotation.angle - horizontal * 40 >= min && _yawRotation.angle - horizontal * 40 <= max) {
+                _yawRotation.angle -= horizontal * 40;
+            }
+            [weakSelf rotateLeft];
         }
-        NSLog(@"%lf %lf", horizontal, vertical);
+        
         if (vertical > 0) {
             weakSelf.rotationAngleVelocity = vertical * 40;
             weakSelf.rotationDirection = DJIGimbalRotateDirectionClockwise;
@@ -90,6 +100,9 @@
         }
     }];
     [self.pilotSpiralHelper startPilotSpiralUpdateResult];
+    
+    [self setupRotationStructs];
+    [self enablePitchExtensionIfPossible];
 }
 
 -(void) setupRotationStructs {
@@ -119,8 +132,6 @@
     
     // rotate
     [self resetRotation];
-    
-
     [self enterVirtualStickControl];
 }
 
@@ -139,38 +150,43 @@
 }
 
 - (IBAction)onLeftButtonClicked:(id)sender {
+    DJIGimbal* gimbal = [DemoComponentHelper fetchGimbal];
+    NSInteger max = [[gimbal getParamMax:DJIGimbalParamAdjustYaw] integerValue];
+    
+    _yawRotation.direction = DJIGimbalRotateDirectionCounterClockwise;
+    if (_yawRotation.angle + 10 <= (double)max) {
+        _yawRotation.angle += 10;
+    }
     [self rotateLeft];
 }
 
 - (IBAction)onRightButtonClicked:(id)sender {
+    DJIGimbal* gimbal = [DemoComponentHelper fetchGimbal];
+    NSInteger min = [[gimbal getParamMin:DJIGimbalParamAdjustYaw] integerValue];
+    
+    _yawRotation.direction = DJIGimbalRotateDirectionCounterClockwise;
+    if (_yawRotation.angle - 10 >= (double)min) {
+        _yawRotation.angle -= 10;
+    }
     [self rotateRight];
 }
 
 
 - (void)rotateLeft {
     
-//    self.currentYaw += 45.0;
-//    [self rotate:self.currentYaw];
-    
-    _pitchRotation.direction = DJIGimbalRotateDirectionCounterClockwise;
-    _pitchRotation.angle += 10;
-    
     DJIGimbal* gimbal = [DemoComponentHelper fetchGimbal];
     [gimbal rotateGimbalWithAngleMode:DJIGimbalAngleModeAbsoluteAngle pitch:self.pitchRotation roll:self.rollRotation yaw:self.yawRotation withCompletion:^(NSError * _Nullable error) {
         if (error) {
-             ShowResult(@"rotateGimbalWithAngleMode failed: %@", error.description);
+//             ShowResult(@"rotateGimbalWithAngleMode failed: %@", error.description);
         }
     }];
 }
 
 - (void)rotateRight {
-    _pitchRotation.direction = DJIGimbalRotateDirectionCounterClockwise;
-    _pitchRotation.angle -= 10;
-    
     DJIGimbal* gimbal = [DemoComponentHelper fetchGimbal];
     [gimbal rotateGimbalWithAngleMode:DJIGimbalAngleModeAbsoluteAngle pitch:self.pitchRotation roll:self.rollRotation yaw:self.yawRotation withCompletion:^(NSError * _Nullable error) {
         if (error) {
-            ShowResult(@"rotateGimbalWithAngleMode failed: %@", error.description);
+//            ShowResult(@"rotateGimbalWithAngleMode failed: %@", error.description);
         }
     }];
 }

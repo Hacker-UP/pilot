@@ -54,6 +54,7 @@ static BOOL IS_RUN_ANIMATION = false;
     [super viewDidLoad];
     [self initUI];
     
+    
 }
 
 - (void)initUI
@@ -63,28 +64,39 @@ static BOOL IS_RUN_ANIMATION = false;
     self.modelNameLabel.hidden = NO;
     //Disable the connect button by default
     [self.connectButton setEnabled:NO];
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:3
                      animations:^{
                          self.connectButton.alpha = 0;
                      }
                      completion:^(BOOL finished) {
                          IS_RUN_ANIMATION = YES;
-                         [self warningAnimationStart];
+                         [weakSelf warningAnimationStart];
                      }];
 }
 
 - (void)warningAnimationStart {
-    if (IS_RUN_ANIMATION) {
-        [UIView animateWithDuration:3 animations:^{
-            self.warnButton.alpha = 1;
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:3 animations:^{
-                self.warnButton.alpha = 0;
-            } completion:^(BOOL finished) {
-                [self warningAnimationStart];
-            }];
-        }];
-    }
+    [UIView animateKeyframesWithDuration:3
+                                   delay:0
+                                 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse
+                              animations:^{
+                                  self.warnButton.alpha = 0;
+                              }
+                              completion:^(BOOL finished) {
+                                  
+                              }];
+}
+
+- (void)stopWarningAnimationStart {
+    [UIView animateWithDuration:0.1
+                          delay:0
+                        options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.warnButton.alpha = 0;
+                     }
+                     completion:^(BOOL finished) {
+                         
+                     }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -115,6 +127,8 @@ static BOOL IS_RUN_ANIMATION = false;
         self.product = newProduct;
         
         [self.connectButton setEnabled:YES];
+        self.warnButton.hidden = YES;
+        [self stopWarningAnimationStart];
         [UIView animateWithDuration:3 animations:^{
             self.connectButton.alpha = 1;
         }];
