@@ -55,7 +55,7 @@
 - (void)initUI
 {
     self.title = @"DJISimulator Demo";
-    self.modelNameLabel.hidden = YES;
+    self.modelNameLabel.hidden = NO;
     //Disable the connect button by default
     [self.connectButton setEnabled:NO];
 }

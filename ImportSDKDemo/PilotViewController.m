@@ -10,6 +10,7 @@
 #import "DemoUtility.h"
 #import "DemoComponentHelper.h"
 #import "PilotSpiralHelper.h"
+#import "DJIGimbal+CapabilityCheck.h"
 #import <DJISDK/DJISDK.h>
 #import <VideoPreviewer/VideoPreviewer.h>
 
@@ -20,6 +21,10 @@
 @property (weak, nonatomic) IBOutlet UIView *fpvTemView;
 @property (weak, nonatomic) IBOutlet UISwitch *fpvTemEnableSwitch;
 @property (weak, nonatomic) IBOutlet UILabel *fpvTemperatureData;
+
+@property (assign, nonatomic) DJIGimbalAngleRotation pitchRotation;
+@property (assign, nonatomic) DJIGimbalAngleRotation yawRotation;
+@property (assign, nonatomic) DJIGimbalAngleRotation rollRotation;
 
 // gimbal button
 @property (weak, nonatomic) IBOutlet UIButton *upButton;
@@ -66,6 +71,13 @@
     self.pilotSpiralHelper = [[PilotSpiralHelper alloc] init];
     __weak typeof(self) weakSelf = self;
     [self.pilotSpiralHelper setBlock:^(PilotSpiralHelper *cls, double horizontal, double vertical) {
+        if (horizontal > 0) {
+            weakSelf.currentYaw += horizontal * 40;
+            [weakSelf rotate:weakSelf.currentYaw];
+        } else {
+            weakSelf.currentYaw -= (-horizontal) * 40;
+            [weakSelf rotate:weakSelf.currentYaw];
+        }
         NSLog(@"%lf %lf", horizontal, vertical);
         if (vertical > 0) {
             weakSelf.rotationAngleVelocity = vertical * 40;
@@ -80,6 +92,24 @@
     [self.pilotSpiralHelper startPilotSpiralUpdateResult];
 }
 
+-(void) setupRotationStructs {
+    DJIGimbal* gimbal = [DemoComponentHelper fetchGimbal];
+    _pitchRotation.enabled = [gimbal isFeatureSupported:DJIGimbalParamAdjustPitch];
+    _yawRotation.enabled = [gimbal isFeatureSupported:DJIGimbalParamAdjustYaw];
+    _rollRotation.enabled = [gimbal isFeatureSupported:DJIGimbalParamAdjustRoll];
+}
+
+-(void) enablePitchExtensionIfPossible {
+    DJIGimbal* gimbal = [DemoComponentHelper fetchGimbal];
+    if (gimbal == nil) {
+        return;
+    }
+    BOOL isPossible = [gimbal isFeatureSupported:DJIGimbalParamPitchRangeExtensionEnabled];
+    if (isPossible) {
+        [gimbal setPitchRangeExtensionEnabled:YES withCompletion:nil];
+    }
+}
+
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -90,10 +120,6 @@
     // rotate
     [self resetRotation];
     
-    
-//    if (self.gimbalSpeedTimer == nil) {
-//        self.gimbalSpeedTimer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(onUpdateGimbalSpeedTick:) userInfo:nil repeats:YES];
-    //    }
 
     [self enterVirtualStickControl];
 }
@@ -122,13 +148,31 @@
 
 
 - (void)rotateLeft {
-    self.currentYaw += 45.0;
-    [self rotate:self.currentYaw];
+    
+//    self.currentYaw += 45.0;
+//    [self rotate:self.currentYaw];
+    
+    _pitchRotation.direction = DJIGimbalRotateDirectionCounterClockwise;
+    _pitchRotation.angle += 10;
+    
+    DJIGimbal* gimbal = [DemoComponentHelper fetchGimbal];
+    [gimbal rotateGimbalWithAngleMode:DJIGimbalAngleModeAbsoluteAngle pitch:self.pitchRotation roll:self.rollRotation yaw:self.yawRotation withCompletion:^(NSError * _Nullable error) {
+        if (error) {
+             ShowResult(@"rotateGimbalWithAngleMode failed: %@", error.description);
+        }
+    }];
 }
 
 - (void)rotateRight {
-    self.currentYaw -= 45.0;
-    [self rotate:self.currentYaw];
+    _pitchRotation.direction = DJIGimbalRotateDirectionCounterClockwise;
+    _pitchRotation.angle -= 10;
+    
+    DJIGimbal* gimbal = [DemoComponentHelper fetchGimbal];
+    [gimbal rotateGimbalWithAngleMode:DJIGimbalAngleModeAbsoluteAngle pitch:self.pitchRotation roll:self.rollRotation yaw:self.yawRotation withCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            ShowResult(@"rotateGimbalWithAngleMode failed: %@", error.description);
+        }
+    }];
 }
 
 
@@ -137,19 +181,12 @@
         yawAngle = yawAngle - 360;
     }
     
-    NSTimer *timer =  [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(rotateDrone:) userInfo:@{@"YawAngle":@(yawAngle)} repeats:YES];
-    [timer fire];
-    
-    [[NSRunLoop currentRunLoop]addTimer:timer forMode:NSDefaultRunLoopMode];
-    [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2]];
-    
-    [timer invalidate];
-    timer = nil;
+    [self rotateDrone: nil];
 }
 
 - (void)rotateDrone:(NSTimer *)timer {
-    NSDictionary *dict = [timer userInfo];
-    float yawAngle = [[dict objectForKey:@"YawAngle"] floatValue];
+
+    float yawAngle = 30;
     
     DJIFlightController *flightController = [DemoUtility fetchFlightController];
     DJIVirtualStickFlightControlData vsFlightCtrlData;
@@ -163,6 +200,7 @@
             NSLog(@"Send FlightControl Data Failed %@", error.description);
         }
     }];
+    
 }
 
 - (void)enterVirtualStickControl {
