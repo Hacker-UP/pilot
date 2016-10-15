@@ -83,16 +83,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CPH-J4-1O2" userLabel="fpv">
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Simulator State" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="JKS-JL-kcB">
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="531" id="eSo-dw-0Gt"/>
-                                    <constraint firstAttribute="height" constant="62" id="x3U-Pa-Sta"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t06-Io-bwx">
                                 <color key="backgroundColor" red="0.73725490199999999" green="0.73725490199999999" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -151,12 +141,10 @@
                             <constraint firstItem="CPH-J4-1O2" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="AUx-Bf-FZ4"/>
                             <constraint firstAttribute="trailing" secondItem="t06-Io-bwx" secondAttribute="trailing" id="DzL-Di-mLC"/>
                             <constraint firstItem="CPH-J4-1O2" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="EcZ-Ef-WRu"/>
-                            <constraint firstItem="JKS-JL-kcB" firstAttribute="centerY" secondItem="Cdj-iN-5WZ" secondAttribute="centerY" id="GRE-A6-B2f"/>
                             <constraint firstItem="yxW-gq-v36" firstAttribute="top" secondItem="t06-Io-bwx" secondAttribute="bottom" id="Ghg-r6-o6w"/>
                             <constraint firstItem="CPH-J4-1O2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Kt0-Fy-FbW"/>
                             <constraint firstItem="t06-Io-bwx" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="NJc-k9-DYy"/>
                             <constraint firstItem="CPH-J4-1O2" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="OQS-tB-Luh"/>
-                            <constraint firstItem="JKS-JL-kcB" firstAttribute="leading" secondItem="Cdj-iN-5WZ" secondAttribute="trailing" constant="8" symbolic="YES" id="PEc-Qs-KB8"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="uVi-fK-gbg" secondAttribute="bottom" id="Wdg-ol-ZQJ"/>
                             <constraint firstItem="uVi-fK-gbg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="cs1-aj-uhD"/>
                             <constraint firstAttribute="trailing" secondItem="yxW-gq-v36" secondAttribute="trailing" id="lUk-qv-tTK"/>
@@ -168,7 +156,6 @@
                         <outlet property="fpvView" destination="CPH-J4-1O2" id="KjB-31-ZeD"/>
                         <outlet property="leftButton" destination="Cdj-iN-5WZ" id="ybk-gg-JHu"/>
                         <outlet property="rightButton" destination="yxW-gq-v36" id="WoA-cu-xhe"/>
-                        <outlet property="simulatorStateLabel" destination="JKS-JL-kcB" id="WzZ-fO-MLU"/>
                         <outlet property="upButton" destination="t06-Io-bwx" id="8JX-Ei-hTu"/>
                     </connections>
                 </viewController>

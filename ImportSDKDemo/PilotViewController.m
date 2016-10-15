@@ -13,7 +13,7 @@
 #import <VideoPreviewer/VideoPreviewer.h>
 
 
-@interface PilotViewController () <DJICameraDelegate, DJISimulatorDelegate>
+@interface PilotViewController () <DJICameraDelegate>
 
 @property(nonatomic, weak) IBOutlet UIView* fpvView;
 @property (weak, nonatomic) IBOutlet UIView *fpvTemView;
@@ -28,7 +28,7 @@
 
 @property(strong,nonatomic) NSTimer* gimbalSpeedTimer;
 
-@property (assign, nonatomic) float mYaw;
+@property (assign, nonatomic) float currentYaw;
 @property (assign, nonatomic) BOOL isSimulatorOn;
 @property (weak, nonatomic) IBOutlet UILabel *simulatorStateLabel;
 
@@ -48,6 +48,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.currentYaw = 0.0;
+    
     [self.fpvTemEnableSwitch setOn:YES];
     
     DJICamera* camera = [DemoComponentHelper fetchCamera];
@@ -76,17 +78,7 @@
 //    if (self.gimbalSpeedTimer == nil) {
 //        self.gimbalSpeedTimer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(onUpdateGimbalSpeedTick:) userInfo:nil repeats:YES];
     //    }
-    
-    DJIFlightController* fc = [DemoUtility fetchFlightController];
-    if (fc && fc.simulator) {
-        self.isSimulatorOn = fc.simulator.isSimulatorStarted;
-        [self updateSimulatorUI];
-        
-        [fc.simulator addObserver:self forKeyPath:@"isSimulatorStarted" options:NSKeyValueObservingOptionNew context:nil];
-        [fc.simulator setDelegate:self];
-    }
 
-    [self toggleSimulator];
     [self enterVirtualStickControl];
 }
 
@@ -101,14 +93,7 @@
         self.gimbalSpeedTimer = nil;
     }
     
-    DJIFlightController* fc = [DemoUtility fetchFlightController];
-    if (fc && fc.simulator) {
-        [fc.simulator removeObserver:self forKeyPath:@"isSimulatorStarted"];
-        [fc.simulator setDelegate:nil];
-    }
-    
     [self exitVirtualStickControl];
-    [self toggleSimulator];
 }
 
 - (IBAction)onLeftButtonClicked:(id)sender {
@@ -121,25 +106,17 @@
 
 
 - (void)rotateLeft {
-    float yawAngle = 90.0;
-    [self rotate:yawAngle];
+    self.currentYaw += 45.0;
+    [self rotate:self.currentYaw];
 }
 
 - (void)rotateRight {
-    float yawAngle = -90.0;
-    [self rotate:yawAngle];
+    self.currentYaw -= 45.0;
+    [self rotate:self.currentYaw];
 }
 
 
 - (void)rotate:(float)yawAngle {
-    //    DJIVirtualStickFlightControlData ctrlData = {0};
-    //    ctrlData.yaw = -0.5 * 30;
-    //    DJIFlightController* fc = [DemoUtility fetchFlightController];
-    //
-    //    if (fc && fc.isVirtualStickControlModeAvailable) {
-    //        [fc sendVirtualStickFlightControlData:ctrlData withCompletion:nil];
-    //    }
-    
     if (yawAngle > DJIVirtualStickYawControlMaxAngle) { //Filter the angle between -180 ~ 0, 0 ~ 180
         yawAngle = yawAngle - 360;
     }
@@ -212,57 +189,6 @@
         [DemoUtility showAlertViewWithTitle:nil message:@"Component not exist." cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
     }
 }
-
-- (void)toggleSimulator {
-    
-    DJIFlightController* fc = [DemoUtility fetchFlightController];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
-    if (fc && fc.simulator) {
-        if (!self.isSimulatorOn) {
-            // The initial aircraft's position in the simulator.
-            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(22, 113);
-            [fc.simulator startSimulatorWithLocation:location updateFrequency:20 GPSSatellitesNumber:10 withCompletion:^(NSError * _Nullable error) {
-                if (error) {
-                    [DemoUtility showAlertViewWithTitle:nil message:[NSString stringWithFormat:@"Start Simulator error: %@", error.description] cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
-                } else {
-                    [DemoUtility showAlertViewWithTitle:nil message:@"Start Simulator succeeded." cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
-                }
-            }];
-        } else {
-            [fc.simulator stopSimulatorWithCompletion:^(NSError * _Nullable error) {
-                if (error) {
-                    [DemoUtility showAlertViewWithTitle:nil message:[NSString stringWithFormat:@"Stop Simulator error: %@", error.description] cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
-                } else {
-                    [DemoUtility showAlertViewWithTitle:nil message:@"Stop Simulator succeeded." cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
-                }
-            }];
-        }
-    }
-}
-
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"isSimulatorStarted"]) {
-        self.isSimulatorOn = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
-        [self updateSimulatorUI];
-    }
-}
-
--(void) updateSimulatorUI {
-    if (!self.isSimulatorOn) {
-        NSLog(@"Simulator stopped");
-    } else {
-        NSLog(@"Simulator running");
-    }
-}
-
-
-#pragma mark - DJI Simulator Delegate
-
--(void)simulator:(DJISimulator *)simulator updateSimulatorState:(DJISimulatorState *)state {
-    [self.simulatorStateLabel setHidden:NO];
-    self.simulatorStateLabel.text = [NSString stringWithFormat:@"Yaw: %0.2f Pitch: %0.2f Roll: %0.2f\n PosX: %0.2f PosY: %0.2f PosZ: %0.2f", state.yaw, state.pitch, state.roll, state.positionX, state.positionY, state.positionZ];
-}
-
 
 
 -(IBAction) onSegmentControlValueChanged:(UISegmentedControl*)sender {
