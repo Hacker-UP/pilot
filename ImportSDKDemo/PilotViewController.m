@@ -28,11 +28,18 @@
 
 @property(strong,nonatomic) NSTimer* gimbalSpeedTimer;
 
+@property (assign, nonatomic) float currentYaw;
+@property (assign, nonatomic) BOOL isSimulatorOn;
+@property (weak, nonatomic) IBOutlet UILabel *simulatorStateLabel;
+
 @property(atomic) float rotationAngleVelocity;
 @property(atomic) DJIGimbalRotateDirection rotationDirection;
 
 
 @property(nonatomic, assign) BOOL needToSetMode;
+
+- (IBAction)onLeftButtonClicked:(id)sender;
+- (IBAction)onRightButtonClicked:(id)sender;
 
 @end
 
@@ -41,6 +48,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.currentYaw = 0.0;
+    
     [self.fpvTemEnableSwitch setOn:YES];
     
     DJICamera* camera = [DemoComponentHelper fetchCamera];
@@ -52,6 +61,7 @@
     
     [[VideoPreviewer instance] start];
     [[VideoPreviewer instance] setDecoderWithProduct:[DemoComponentHelper fetchProduct] andDecoderType:VideoPreviewerDecoderTypeSoftwareDecoder];
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -67,7 +77,9 @@
     
 //    if (self.gimbalSpeedTimer == nil) {
 //        self.gimbalSpeedTimer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(onUpdateGimbalSpeedTick:) userInfo:nil repeats:YES];
-//    }
+    //    }
+
+    [self enterVirtualStickControl];
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -79,6 +91,102 @@
     if (self.gimbalSpeedTimer) {
         [self.gimbalSpeedTimer invalidate];
         self.gimbalSpeedTimer = nil;
+    }
+    
+    [self exitVirtualStickControl];
+}
+
+- (IBAction)onLeftButtonClicked:(id)sender {
+    [self rotateLeft];
+}
+
+- (IBAction)onRightButtonClicked:(id)sender {
+    [self rotateRight];
+}
+
+
+- (void)rotateLeft {
+    self.currentYaw += 45.0;
+    [self rotate:self.currentYaw];
+}
+
+- (void)rotateRight {
+    self.currentYaw -= 45.0;
+    [self rotate:self.currentYaw];
+}
+
+
+- (void)rotate:(float)yawAngle {
+    if (yawAngle > DJIVirtualStickYawControlMaxAngle) { //Filter the angle between -180 ~ 0, 0 ~ 180
+        yawAngle = yawAngle - 360;
+    }
+    
+    NSTimer *timer =  [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(rotateDrone:) userInfo:@{@"YawAngle":@(yawAngle)} repeats:YES];
+    [timer fire];
+    
+    [[NSRunLoop currentRunLoop]addTimer:timer forMode:NSDefaultRunLoopMode];
+    [[NSRunLoop currentRunLoop]runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2]];
+    
+    [timer invalidate];
+    timer = nil;
+}
+
+- (void)rotateDrone:(NSTimer *)timer {
+    NSDictionary *dict = [timer userInfo];
+    float yawAngle = [[dict objectForKey:@"YawAngle"] floatValue];
+    
+    DJIFlightController *flightController = [DemoUtility fetchFlightController];
+    DJIVirtualStickFlightControlData vsFlightCtrlData;
+    vsFlightCtrlData.pitch = 0;
+    vsFlightCtrlData.roll = 0;
+    vsFlightCtrlData.verticalThrottle = 0;
+    vsFlightCtrlData.yaw = yawAngle;
+    
+    [flightController sendVirtualStickFlightControlData:vsFlightCtrlData withCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Send FlightControl Data Failed %@", error.description);
+        }
+    }];
+}
+
+- (void)enterVirtualStickControl {
+    DJIFlightController* fc = [DemoUtility fetchFlightController];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    
+    if (fc) {
+        
+//        fc.yawControlMode = DJIVirtualStickYawControlModeAngularVelocity;
+//        fc.rollPitchControlMode = DJIVirtualStickRollPitchControlModeVelocity;
+        
+        [fc setYawControlMode:DJIVirtualStickYawControlModeAngle];
+        [fc setRollPitchCoordinateSystem:DJIVirtualStickFlightCoordinateSystemGround];
+        
+        [fc enableVirtualStickControlModeWithCompletion:^(NSError *error) {
+            if (error) {
+                [DemoUtility showAlertViewWithTitle:nil message:[NSString stringWithFormat:@"Enter Virtual Stick Mode: %@", error.description] cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
+            } else {
+                [DemoUtility showAlertViewWithTitle:nil message:@"Enter Virtual Stick Mode:Succeeded" cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
+            }
+        }];
+    } else {
+        [DemoUtility showAlertViewWithTitle:nil message:@"Component not exist." cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
+    }
+}
+
+- (void)exitVirtualStickControl {
+    DJIFlightController* fc = [DemoUtility fetchFlightController];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    
+    if (fc) {
+        [fc disableVirtualStickControlModeWithCompletion:^(NSError * _Nullable error) {
+            if (error){
+                [DemoUtility showAlertViewWithTitle:nil message:[NSString stringWithFormat:@"Exit Virtual Stick Mode: %@", error.description] cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
+            } else {
+                [DemoUtility showAlertViewWithTitle:nil message:@"Exit Virtual Stick Mode:Succeeded" cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
+            }
+        }];
+    } else {
+        [DemoUtility showAlertViewWithTitle:nil message:@"Component not exist." cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
     }
 }
 
