@@ -63,6 +63,7 @@
     [[VideoPreviewer instance] start];
     [[VideoPreviewer instance] setDecoderWithProduct:[DemoComponentHelper fetchProduct] andDecoderType:VideoPreviewerDecoderTypeSoftwareDecoder];
     
+<<<<<<< HEAD
     self.pilotSpiralHelper = [[PilotSpiralHelper alloc] init];
     __weak typeof(self) weakSelf = self;
     [self.pilotSpiralHelper setBlock:^(PilotSpiralHelper *cls, double horizontal, double vertical) {
@@ -78,6 +79,8 @@
         }
     }];
     [self.pilotSpiralHelper startPilotSpiralUpdateResult];
+=======
+>>>>>>> 0e618f5353b00a9cdde833ff32b5a547455ca163
 }
 
 -(void) viewWillAppear:(BOOL)animated {
@@ -109,6 +112,9 @@
         self.gimbalSpeedTimer = nil;
     }
     
+<<<<<<< HEAD
+    
+=======
     [self exitVirtualStickControl];
 }
 
@@ -204,6 +210,7 @@
     } else {
         [DemoUtility showAlertViewWithTitle:nil message:@"Component not exist." cancelAlertAction:cancelAction defaultAlertAction:nil viewController:self];
     }
+>>>>>>> 0e618f5353b00a9cdde833ff32b5a547455ca163
 }
 
 
