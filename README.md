@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/cocoapods/l/JZMultiChoicesCircleButton.svg?style=flat)](http://cocoapods.org/pods/JZMultiChoicesCircleButton)
 [![Platform](https://img.shields.io/cocoapods/p/JZMultiChoicesCircleButton.svg?style=flat)](http://cocoapods.org/pods/JZMultiChoicesCircleButton)
 
-![](bg.png)
+![](bg.PNG)
 
 ## Description
 
