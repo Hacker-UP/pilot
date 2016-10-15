@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5LS-vI-sfl">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5LS-vI-sfl">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -26,7 +26,7 @@
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Subtitle" translatesAutoresizingMaskIntoConstraints="NO" id="rJh-6M-UpL"/>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DGm-Ey-hQe">
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DGm-Ey-hQe">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="94" id="qi1-ja-ab6"/>
                                     <constraint firstAttribute="height" constant="61" id="scQ-kp-iaf"/>
@@ -37,9 +37,20 @@
                                     <segue destination="BYZ-38-t0r" kind="show" id="L9r-x1-TUu"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LOE-76-KcH">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="61" id="jUg-GP-Sc0"/>
+                                    <constraint firstAttribute="width" constant="94" id="y4g-5q-oeo"/>
+                                </constraints>
+                                <state key="normal" image="ButtonWarning"/>
+                                <connections>
+                                    <action selector="onConnectButtonClicked:" destination="5LS-vI-sfl" eventType="touchUpInside" id="lJ3-xA-X3m"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="BeM-sI-Em1" firstAttribute="top" secondItem="LOE-76-KcH" secondAttribute="bottom" constant="65" id="293-Tp-aCJ"/>
                             <constraint firstItem="BeM-sI-Em1" firstAttribute="top" secondItem="DGm-Ey-hQe" secondAttribute="bottom" constant="65" id="7dG-Xq-sGC"/>
                             <constraint firstItem="hxf-K9-oQF" firstAttribute="centerX" secondItem="eKe-QA-fTd" secondAttribute="centerX" constant="2" id="Euq-7B-MR2"/>
                             <constraint firstItem="eKe-QA-fTd" firstAttribute="centerX" secondItem="c11-F1-xIR" secondAttribute="centerX" id="NdS-3V-7Mu"/>
@@ -48,12 +59,15 @@
                             <constraint firstItem="rJh-6M-UpL" firstAttribute="top" secondItem="hxf-K9-oQF" secondAttribute="bottom" constant="17" id="arm-Zc-yC8"/>
                             <constraint firstItem="eKe-QA-fTd" firstAttribute="width" secondItem="c11-F1-xIR" secondAttribute="width" id="cnG-TR-uzB"/>
                             <constraint firstItem="rJh-6M-UpL" firstAttribute="centerX" secondItem="hxf-K9-oQF" secondAttribute="centerX" id="eAL-1I-XJa"/>
+                            <constraint firstItem="LOE-76-KcH" firstAttribute="centerX" secondItem="eKe-QA-fTd" secondAttribute="centerX" constant="2.5" id="fea-pE-3ds"/>
                             <constraint firstItem="eKe-QA-fTd" firstAttribute="height" secondItem="c11-F1-xIR" secondAttribute="height" id="hIb-hl-aIS"/>
+                            <constraint firstItem="LOE-76-KcH" firstAttribute="centerX" secondItem="rJh-6M-UpL" secondAttribute="centerX" id="jqn-6N-Epz"/>
                             <constraint firstItem="hxf-K9-oQF" firstAttribute="top" secondItem="cOq-7S-Lcf" secondAttribute="bottom" constant="80" id="moP-cp-nQq"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="connectButton" destination="DGm-Ey-hQe" id="eKy-Rm-HnC"/>
+                        <outlet property="warnButton" destination="LOE-76-KcH" id="DHr-71-nqE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M02-3Z-2AY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -159,6 +173,7 @@
     <resources>
         <image name="Background" width="667" height="375"/>
         <image name="Button" width="96" height="62"/>
+        <image name="ButtonWarning" width="96" height="62"/>
         <image name="Subtitle" width="210" height="29"/>
         <image name="Title" width="63" height="40"/>
     </resources>

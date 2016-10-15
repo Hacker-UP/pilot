@@ -10,12 +10,16 @@
 #import "DemoUtility.h"
 #import "PilotSpiralHelper.h"
 
+static BOOL IS_RUN_ANIMATION = false;
+
 @interface RootViewController ()<DJISDKManagerDelegate>
 
 @property(nonatomic, weak) DJIBaseProduct* product;
 @property (weak, nonatomic) IBOutlet UILabel *connectStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *modelNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *connectButton;
+@property (weak, nonatomic) IBOutlet UIButton *warnButton;
+@property (assign) BOOL isShowWarning;
 
 - (IBAction)onConnectButtonClicked:(id)sender;
 
@@ -54,10 +58,33 @@
 
 - (void)initUI
 {
+    self.isShowWarning = NO;
     self.title = @"DJISimulator Demo";
     self.modelNameLabel.hidden = NO;
     //Disable the connect button by default
     [self.connectButton setEnabled:NO];
+    [UIView animateWithDuration:3
+                     animations:^{
+                         self.connectButton.alpha = 0;
+                     }
+                     completion:^(BOOL finished) {
+                         IS_RUN_ANIMATION = YES;
+                         [self warningAnimationStart];
+                     }];
+}
+
+- (void)warningAnimationStart {
+    if (IS_RUN_ANIMATION) {
+        [UIView animateWithDuration:3 animations:^{
+            self.warnButton.alpha = 1;
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:3 animations:^{
+                self.warnButton.alpha = 0;
+            } completion:^(BOOL finished) {
+                [self warningAnimationStart];
+            }];
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,7 +113,11 @@
 {
     if (newProduct) {
         self.product = newProduct;
+        
         [self.connectButton setEnabled:YES];
+        [UIView animateWithDuration:3 animations:^{
+            self.connectButton.alpha = 1;
+        }];
         
     } else {
         
@@ -108,7 +139,7 @@
 }
 
 - (IBAction)onConnectButtonClicked:(id)sender {
-    
+    NSLog(@"hello");
 }
 
 -(void) updateStatusBasedOn:(DJIBaseProduct* )newConnectedProduct {
@@ -117,7 +148,7 @@
         self.modelNameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Model: \%@", @""),newConnectedProduct.model];
         self.modelNameLabel.hidden = NO;
         
-    }else {
+    } else {
         self.connectStatusLabel.text = NSLocalizedString(@"Status: Product Not Connected", @"");
         self.modelNameLabel.text = NSLocalizedString(@"Model: Unknown", @"");
     }
