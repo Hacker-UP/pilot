@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class PilotSpiralHelper;
+typedef void (^directionBlock)(PilotSpiralHelper *cls, double horizontal, double vertical);
+
 @interface PilotSpiralHelper : NSObject
+
+@property (nonatomic, strong) directionBlock callBlock;
+
+- (void)setCallBlock:(directionBlock)callBlock;
+- (void)startPilotSpiralUpdateResult;
 
 @end
