@@ -326,9 +326,9 @@ a:active {
 
 .button {
     color: white;
-    background: #10bbf1;
+    background: #47DFBB;
     height: 58px;
-    border: 2px solid #10bbf1;
+    border: 2px solid #47DFBB;
     font: 500 22px "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: 0 21px;
     -moz-transition: color 0.1s linear, background-color 0.1s linear, border-color 0.1s linear;
@@ -345,13 +345,13 @@ a:active {
 }
 
 .button:hover {
-    background: #40c9f4;
-    border-color: #40c9f4;
+    background: #5DE9C8;
+    border-color: #5DE9C8;
 }
 
 .button:active {
-    background: #0b97c3;
-    border-color: #0b97c3;
+    background: #5DE9C8;
+    border-color: #5DE9C8;
 }
 
 a.button {
@@ -477,7 +477,7 @@ header .buttons-wrapper .button-stripe {
 /* footer --------------------------  */
 
 footer {
-    background: #324a57;
+    background: #47DFBB;
     color: white;
     font-size: 16px;
     line-height: 28px;
