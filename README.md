@@ -23,6 +23,8 @@ PILOT is an iOS appilication, providing wonderful virtual experience from a pilo
 
 ### DJI Mobile SDK
 
+The DJI Mobile SDK enables you to automate your DJI Product. You can control flight, and many subsystems of the product including the camera and gimbal. Using the Mobile SDK, create a customized mobile app to unlock the full potential of your DJI aerial platform.
+
 ![DJI Mobil SDK](http://ocp5vadja.bkt.clouddn.com/20150401141527821335.jpg)
 
 ## About UP
