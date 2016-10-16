@@ -21,7 +21,7 @@ PILOT is an iOS appilication, providing wonderful virtual experience from a pilo
 
 ### DJI Mobile SDK
 
-![DJI Mobil SDK](http://image.xinmin.cn/2015/04/01/20150401141527821335.jpg)
+![DJI Mobil SDK](http://ocp5vadja.bkt.clouddn.com/20150401141527821335.jpg)
 
 ## About UP
 
