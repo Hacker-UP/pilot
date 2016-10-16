@@ -17,6 +17,12 @@ PILOT is an iOS appilication, providing wonderful virtual experience from a pilo
 - Put on your cardboard.
 - Try to move your head forward and back, right and left, and just enjoy this awesome virtual experience!  
 
+## Use SDK
+
+### DJI Mobile SDK
+
+![DJI Mobil SDK](http://image.xinmin.cn/2015/04/01/20150401141527821335.jpg)
+
 ## About UP
 
 UP Team is a Geek Team, whose members are from different places. We like to create ideas and make them come true. So fly without wings, hack everything for every dreams. 
